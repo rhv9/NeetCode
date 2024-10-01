@@ -27,38 +27,55 @@ class SolutionBruteForce:
 class SolutionJumpy:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
         # sort
-        nums = sorted(nums)
+        numsTuple = [(nums[i], i) for i in range(len(nums))]
+        numsTuple = sorted(numsTuple,key=lambda tup: tup[0])
 
-        initialJump = 16
-        for i in range(len(nums)):
+        initialJump = 1024*64
+        print("Initial jump = ", initialJump)
+        for i in range(len(numsTuple)):
             jump = initialJump
             j = i+1
-            while j < len(nums):
-                sum = nums[i] + nums[j]
+            while j < len(numsTuple):
+                sum = numsTuple[i][0] + numsTuple[j][0]
 
-                numi = nums[i]
-                numj = nums[j]
+                numi = numsTuple[i][0]
+                numj = numsTuple[j][0]
 
                 if sum == target:
-                    return [i, j]
+                    return [numsTuple[i][1], numsTuple[j][1]]
                 elif sum < target:
                     j += jump
                 else:
                     if jump == 1:
                         break
                     j -= jump
-                    jump = 1
+                    jump = round(jump / 2)
 
                 # if the next jump is going over nums array, then iterate normally
-                if j + jump >= len(nums):
-                    jump = 1
+                while j + jump >= len(numsTuple) and jump != 1:
+                    jump = round(jump / 2)
+
+        return [-1, -1]
+    
+class SolutionOnePass:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        hashMap = {}
+        
+        for i in range(len(nums)):
+            firstNum = nums[i]
+            secondNum = target - firstNum
+
+            if secondNum in hashMap:
+                return [i, hashMap[secondNum]]
+            else:
+                hashMap[firstNum] = i
 
         return [-1, -1]
 
-
-random.seed(0)
+print(random.seed())
 
 size = 100000
+print("Size of array is ", size)
 nums = [random.randint(-10000000, 10000000) for _ in range(size)]
 
 i = random.randint(0, size-1)
@@ -80,6 +97,12 @@ print("nums[", solution[0], "] + nums[", solution[1], "] == ", nums[solution[0]]
 print("Jumpy")
 t = time.process_time_ns()
 solution = SolutionJumpy.twoSum({}, nums, target)
+print((time.process_time_ns() - t)/1000000.0)
+print("nums[", solution[0], "] + nums[", solution[1], "] == ", nums[solution[0]] + nums[solution[1]])
+
+print("Onepass")
+t = time.process_time_ns()
+solution = SolutionOnePass.twoSum({}, nums, target)
 print((time.process_time_ns() - t)/1000000.0)
 print("nums[", solution[0], "] + nums[", solution[1], "] == ", nums[solution[0]] + nums[solution[1]])
 

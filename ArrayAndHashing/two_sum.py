@@ -1,6 +1,9 @@
+import sys
+sys.path.append("..")
+import utilities
 from typing import List
 import random
-import time
+
 
 # Time complexity
 #   Best case    : 
@@ -88,22 +91,27 @@ print("Target: ", target)
 print("i: ", i) 
 print("j: ", j) 
 
+
+
+
+t = utilities.Timer()
+
 print("Brute force")
-t = time.process_time_ns()
+t.start()
 solution = SolutionBruteForce.twoSum({}, nums, target)
-print((time.process_time_ns() - t)/1000000.0)
+t.printStop()
 print("nums[", solution[0], "] + nums[", solution[1], "] == ", nums[solution[0]] + nums[solution[1]])
 
 print("Jumpy")
-t = time.process_time_ns()
+t.start()
 solution = SolutionJumpy.twoSum({}, nums, target)
-print((time.process_time_ns() - t)/1000000.0)
+t.printStop()
 print("nums[", solution[0], "] + nums[", solution[1], "] == ", nums[solution[0]] + nums[solution[1]])
 
 print("Onepass")
-t = time.process_time_ns()
+t.start()
 solution = SolutionOnePass.twoSum({}, nums, target)
-print((time.process_time_ns() - t)/1000000.0)
+t.printStop()
 print("nums[", solution[0], "] + nums[", solution[1], "] == ", nums[solution[0]] + nums[solution[1]])
 
 

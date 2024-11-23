@@ -58,15 +58,11 @@ class Solution:
                 continue
                         
             #print("> Step num:", num, " | count:", count)
-            printLinkedList(beforeFirst.next)
-            #print("Size ", size)
+            #printLinkedList(beforeFirst.next)
             
             added = False
             current = beforeFirst
-            #print("Beginning with ", current.next.data)
-            #print("placing ", num, " count: ", count, "...")
             for i in range(0, min(size, k)):
-                #print(current.next.data)
                 if count > elementHash[current.next.data]:
                     newNode = Node(num)
 
